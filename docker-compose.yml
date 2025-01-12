@@ -1,0 +1,42 @@
+services:
+  upload_service:
+    build:
+      args:
+        INSTALL_JUPYTER: false
+    environment:
+      - PINECONE_API_KEY=${PINECONE_API_KEY}
+      - LANGCHAIN_API_KEY=${LANGCHAIN_API_KEY}
+      - LANGCHAIN_TRACING_V2=${LANGCHAIN_TRACING_V2}
+      - LANGCHAIN_PROJECT=${LANGCHAIN_PROJECT}
+      - PINECONE_INDEX=${PINECONE_INDEX}
+    volumes:
+      - .:/app
+    command: python upload.py
+  rag_app:
+    build:
+      args:
+        INSTALL_JUPYTER: false
+    environment:
+      - PINECONE_API_KEY=${PINECONE_API_KEY}
+      - LANGCHAIN_API_KEY=${LANGCHAIN_API_KEY}
+      - LANGCHAIN_TRACING_V2=${LANGCHAIN_TRACING_V2}
+      - LANGCHAIN_PROJECT=${LANGCHAIN_PROJECT}
+      - PINECONE_INDEX=${PINECONE_INDEX}
+    volumes:
+      - .:/app
+    command: python main.py
+  jupyter:
+    build:
+      args:
+        INSTALL_JUPYTER: true
+    ports:
+      - "8888:8888"
+    environment:
+      - PINECONE_API_KEY=${PINECONE_API_KEY}
+      - LANGCHAIN_API_KEY=${LANGCHAIN_API_KEY}
+      - LANGCHAIN_TRACING_V2=${LANGCHAIN_TRACING_V2}
+      - LANGCHAIN_PROJECT=${LANGCHAIN_PROJECT}
+      - PINECONE_INDEX=${PINECONE_INDEX}
+    volumes:
+      - .:/app
+    command: jupyter notebook --ip=0.0.0.0 --port=8888 --no-browser --allow-root
