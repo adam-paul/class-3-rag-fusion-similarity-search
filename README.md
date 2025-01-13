@@ -43,7 +43,7 @@ Remember the names you gave to your indices, as you'll need them for the `.env` 
    OPENAI_API_KEY=your-secret-key
    LANGCHAIN_API_KEY=your-secret-key
    LANGCHAIN_TRACING_V2=true
-   LANGCHAIN_PROJECT=24a7_2_1
+   LANGCHAIN_PROJECT=gauntlet_class_3
    PINECONE_API_KEY=your-secret-key
    PINECONE_INDEX=your-3072-dimension-index-name
    PINECONE_INDEX_TWO=your-1536-dimension-index-name
