@@ -1,10 +1,10 @@
-# Week 2.1: RAG (Retrieval-Augmented Generation)
+# Class 3: RAG (Retrieval-Augmented Generation)
 
 ## Introduction
 Master a technique that integrates relevant documents into the generation process, enhancing the quality and contextuality of LLM responses. This repo demonstrates a simple RAG example and more advanced implementations.
 
 ## Class Materials
-- [Link to Class Slides]()
+- [Link to Class Slides](https://docs.google.com/presentation/d/1WJ4hMDeAah6ZIlBKNvMtR8l8BpfVegc7e8vI57vxnFM/edit?usp=sharing)
 
 ## Prerequisites
 - Docker (for containerized usage - recommended)
