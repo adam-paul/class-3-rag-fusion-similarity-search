@@ -13,7 +13,7 @@ os.environ["LANGCHAIN_TRACING_V2"] = os.getenv("LANGCHAIN_TRACING_V2")
 os.environ["LANGCHAIN_PROJECT"] = os.getenv("LANGCHAIN_PROJECT")
 PINECONE_INDEX = os.getenv("PINECONE_INDEX")
 
-prompt = "How has Berkshire Hathaway's investment in Coca-cola grown?"
+prompt = "What three years did Berkshire Hathaway have the best results for its investors, and what is one possible attribution for this success (be specific)?"
 
 # Note: we must use the same embedding model that we used when uploading the docs
 embeddings = OpenAIEmbeddings(model="text-embedding-3-large")

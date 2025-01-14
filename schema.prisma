@@ -1,0 +1,77 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url = env("POSTGRES_PRISMA_URL")
+  directUrl = env("POSTGRES_URL_NON_POOLING")
+}
+
+model User {
+  id        String    @id
+  name      String?
+  imageUrl  String?
+  status    String    @default("offline")
+  messages  Message[]
+  reactions Reaction[]
+  createdChannels Channel[] @relation("CreatedChannels")
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  @@map("users")
+}
+
+model Channel {
+  id          String    @id @default(cuid())
+  name        String
+  description String?
+  parentId    String?
+  parent      Channel?  @relation("ChannelHierarchy", fields: [parentId], references: [id], onDelete: Cascade)
+  children    Channel[] @relation("ChannelHierarchy")
+  messages    Message[]
+  creator     User      @relation("CreatedChannels", fields: [creatorId], references: [id], onDelete: Cascade)
+  creatorId   String
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model Message {
+  id        String    @id
+  content   String
+  fileUrl   String?
+  fileName  String?
+  fileType  String?
+  fileSize  Int?
+  status    String    @default("PENDING") // PENDING, DELIVERED, ERROR
+  channel   Channel   @relation(fields: [channelId], references: [id], onDelete: Cascade)
+  channelId String
+  author    User      @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  authorId  String
+  reactions  Reaction[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  originalId String? // For tracking optimistic messages
+  replyToId String? // ID of the message being replied to
+  replyTo   Message? @relation("Replies", fields: [replyToId], references: [id], onDelete: SetNull)
+  replies   Message[] @relation("Replies")
+  threadId  String? // ID of the thread channel created from this message
+  threadName String? // Name of the thread created from this message
+}
+
+model Reaction {
+  id        String   @id @default(cuid())
+  content   String   // SQLite doesn't support varchar length constraints
+  message   Message  @relation(fields: [messageId], references: [id], onDelete: Cascade)
+  messageId String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([messageId, userId]) // One reaction per user per message initially
+  @@map("reactions")
+}
